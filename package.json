@@ -1,0 +1,86 @@
+{
+  "name": "next-amp-element",
+  "version": "0.0.1",
+  "sideEffects": false,
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
+  "typings": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/esm/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "concurrently pnpm:build:*",
+    "build:esm": "cross-env BABEL_ENV=esm babel src --root-mode upward --extensions .ts,.tsx -d dist/esm --source-maps",
+    "build:cjs": "cross-env BABEL_ENV=cjs babel src --root-mode upward --extensions .ts,.tsx -d dist/cjs --source-maps",
+    "build:types": "tsc --emitDeclarationOnly --declaration --declarationDir dist/types",
+    "clean": "rimraf {dist,node_modules}",
+    "clean:dist": "rimraf dist",
+    "test": "jest --env=jsdom --passWithNoTests",
+    "test:cov": "pnpm test --coverage",
+    "lint": "concurrently pnpm:lint:*",
+    "lint:src": "eslint src --ext .ts,.tsx",
+    "lint:types": "tsc --noEmit",
+    "check": "prettier --check src",
+    "format": "prettier --write src",
+    "prepare": "husky install",
+    "changelog:commit": "git add CHANGELOG.md && git commit -am 'docs: add changelog' && git push",
+    "changeset": "changeset",
+    "changeset:publish": "changeset publish",
+    "changeset:tag": "changeset tag"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.18.6",
+    "@babel/core": "^7.18.6",
+    "@babel/preset-env": "^7.18.6",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.18.6",
+    "@babel/runtime": "^7.18.6",
+    "@changesets/changelog-github": "^0.4.5",
+    "@changesets/cli": "^2.23.0",
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3",
+    "@types/node": "18.0.3",
+    "@types/react": "18.0.15",
+    "@typescript-eslint/eslint-plugin": "^5.30.5",
+    "@typescript-eslint/parser": "^5.30.5",
+    "concurrently": "^7.2.2",
+    "cross-env": "^7.0.3",
+    "eslint": "8.19.0",
+    "eslint-config-airbnb-typescript": "17.0.0",
+    "eslint-config-prettier": "8.5.0",
+    "eslint-config-react": "1.1.7",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-jsx-a11y": "6.6.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "eslint-plugin-react": "7.30.1",
+    "eslint-plugin-testing-library": "5.5.1",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.3",
+    "next": "^12.2.0",
+    "prettier": "^2.7.1",
+    "react": "^18.2.0",
+    "rimraf": "^3.0.2",
+    "typescript": "4.7.4"
+  },
+  "peerDependencies": {
+    "next": "^12.2.0",
+    "react": "^18.2.0"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx,html,css,json}": [
+      "pnpm prettier --write"
+    ]
+  }
+}
